@@ -1,0 +1,5 @@
+IN_DATASET = 'covid'
+IN_TABLE = 'us_500'
+OUT_BUCKET = 'rich_karma_bq_out'
+OUT_FOLDER = 'data'
+OUT_FILE_NAME = 'us-500-bq-out.csv'

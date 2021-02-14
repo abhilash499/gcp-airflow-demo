@@ -1,0 +1,35 @@
+version: '3.7'
+services:
+    postgres:
+        image: postgres:9.6
+        environment:
+            - POSTGRES_USER=airflow
+            - POSTGRES_PASSWORD=airflow
+            - POSTGRES_DB=airflow
+        ports:
+            - "5432:5432"
+    webserver:
+        build: .
+        image: local_airflow:v1
+        restart: always
+        depends_on:
+            - postgres
+        environment:
+            - LOAD_EX=n
+            - EXECUTOR=Local
+            - GOOGLE_APPLICATION_CREDENTIALS=/home/airflow/gcs/rich_karma.json
+            - AIRFLOW_HOME=/home/airflow/gcs/
+
+        volumes:
+            - ./dags:/home/airflow/gcs/dags
+            - ./rich_karma.json:/home/airflow/gcs/rich_karma.json
+            - ./makefile:/home/airflow/gcs/makefile
+
+        ports:
+            - "8080:8080"
+        command: webserver
+        healthcheck:
+            test: ["CMD-SHELL", "[ -f /home/airflow/gcs/airflow-webserver.pid ]"]
+            interval: 30s
+            timeout: 30s
+            retries: 3

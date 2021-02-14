@@ -1,0 +1,5 @@
+source_bucket = 'rich_karma_staging'
+source_folder = 'data'
+target_bucket = 'rich_karma_input'
+target_folder = 'data'
+file_pattern = 'us-500'
